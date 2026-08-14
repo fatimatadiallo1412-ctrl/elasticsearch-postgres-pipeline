@@ -1,0 +1,15 @@
+cat > .gitignore << 'EOF'
+# Environnement Python
+venv/
+__pycache__/
+*.pyc
+
+# Variables sensibles
+.env
+
+# Docker
+postgres_data/
+
+# Système
+.DS_Store
+EOF
