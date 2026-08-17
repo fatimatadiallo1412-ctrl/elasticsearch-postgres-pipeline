@@ -71,6 +71,21 @@ services:
       - ./logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash/drivers:/usr/share/logstash/drivers
 
+  kibana-setup:
+    image: curlimages/curl:latest
+    depends_on:
+      kibana:
+        condition: service_started
+    volumes:
+      - ./kibana/export:/export
+    entrypoint: >
+      sh -c "
+      sleep 30 &&
+      curl -X POST http://kibana:5601/api/saved_objects/_import?overwrite=true
+      -H 'kbn-xsrf: true'
+      --form file=@/export/dashboard-export.ndjson
+      "
+
 volumes:
   postgres_data:
   es_data:
